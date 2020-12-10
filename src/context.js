@@ -1,8 +1,10 @@
+
 import React, { Component } from 'react';
+import {Service} from './Service/api'
+import PropTypes, { string } from 'prop-types';
 
-import { detailProduct } from './data';
 
-const ENDPOINT = `http://localhost:3009/`;
+
 
 const ProductContext = React.createContext();
 // Provider
@@ -13,35 +15,61 @@ class ProductProvider extends Component {
   data;
   state = {
     products: [],
-    detailProduct: detailProduct,
+    detailProduct: [],
     cart: [],
     modalOpen: false,
-    modalProduct: detailProduct,
-    cartSubTotal: 0,
+    modalProduct: 0,
+    cartSubTotal: [],
     cartTax: 0,
-    cartTotal: 0
+    cartTotal: 0,
+    isLogin: false,
+    user:{
+      userName:'',
+      permission:''
+    },
+    LoginOpen: false,
+    SignUpOpen: false,
+    
+    
   }
 
-  componentDidMount() {
-    fetch(ENDPOINT)
-  .then(response => response.json())
-  .then(data => this.data = data).then(() => {
+  async componentDidMount() {
+  Service.getProducts().then((res)=>{
+      const data = res.data.data
+      const products = data;
+      
+      
+      this.data = data;
+      let state = JSON.parse(localStorage.getItem('State')) !== null ? JSON.parse(localStorage.getItem('State')):[]
+      this.setState({
+        products:products,
+        detailProduct:state.detailProduct,
+        cart:state.cart?state.cart:[],
+        modalProduct:state.modalProduct?state.modalProduct:0,
+        cartSubTotal:state.cartSubTotal,
+        cartTax:state.cartTax,
+        cartTotal:state.cartTotal
+      })
+      this.setProducts();
+      localStorage.setItem('State',JSON.stringify(this.state));
+    
 
-    this.setProducts();
-  });
-
+  })
+ 
+      
   }
 
   setProducts = () => {
     let tempProducts = [];
-    console.log(this.data.storeProducts)
-    this.data.storeProducts.forEach(item => {
+    this.data.forEach(item => {
       const singleItem = { ...item };
       tempProducts = [...tempProducts, singleItem];
     })
     this.setState(() => {
       return { products: tempProducts };
     })
+    
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
 
   getItem = (id) => {
@@ -55,13 +83,16 @@ class ProductProvider extends Component {
     this.setState(() => {
       return { detailProduct: product }
     })
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
   addToCart = (id) => {
     let tempProducts = [...this.state.products];
     const index = tempProducts.indexOf(this.getItem(id));
     const product = tempProducts[index];
-    product.inCart = true;
-    product.count = 1;
+      product.inCart = true;
+      product.count = 1;
+    
+    
     const price = product.price;
     product.total = price;
     this.setState(() => {
@@ -72,13 +103,59 @@ class ProductProvider extends Component {
     }, () => {
       this.addTotals();
     })
+    
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
+  
 
   openModal = id => {
     const product = this.getItem(id);
     this.setState(() => {
       return { modalProduct: product, modalOpen: true }
     })
+    localStorage.setItem('State',JSON.stringify(this.state));
+  }
+  openLogin=()=>{
+    this.setState(()=>{
+      return { LoginOpen:true}
+    })
+  }
+  closeLogin=()=>{
+    this.setState(()=>{
+      return { LoginOpen:false}
+    })
+  }
+  openSignUp = () => {
+    this.setState(()=>{
+      return { SignUpOpen: true}
+    })
+  }
+  closeSignUp = () =>{
+    this.setState(()=>{
+      return { SignUpOpen: false}
+    })
+  }
+  setUser = (user) =>{
+    if(user){
+      this.setState(()=>{
+        return { user: user}
+      })
+    }
+  }
+  setLogin=()=>{
+    if(this.state.isLogin === false){
+      this.setState(()=>{
+        return { isLogin: true}
+      })
+    }else{
+      this.setState(()=>{
+        return { isLogin: false}
+      })
+    }
+  }
+  Logout=()=>{
+    localStorage.removeItem('State');
+    this.setLogin();
   }
 
   closeModal = () => {
@@ -91,11 +168,13 @@ class ProductProvider extends Component {
     let tempCart = [...this.state.cart];
     const selectedProduct = tempCart.find(item => item.id === id);
     const index = tempCart.indexOf(selectedProduct);
+
     const product = tempCart[index];
     product.count = product.count + 1;
     product.total = product.count * product.price;
     this.setState(() => { return { cart: [...tempCart] } }, () => { this.addTotals() })
-
+    
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
 
   decrement = (id) => {
@@ -117,9 +196,12 @@ class ProductProvider extends Component {
         }
       )
     }
+    
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
 
   removeItem = (id) => {
+    console.log('adas')
     let tempProducts = [...this.state.products];
     let tempCart = [...this.state.cart];
     tempCart = tempCart.filter(item => item.id !== id);
@@ -136,8 +218,19 @@ class ProductProvider extends Component {
     }, () => {
       this.addTotals();
     })
+   
+    localStorage.setItem('State',JSON.stringify(this.state));
+  }
+  setProducts = (products) =>{
+    if(products){
+      this.setState(()=>{
+        return {products:products}
+      })
+    }
+    
   }
 
+  
   clearCart = () => {
     this.setState(() => {
       return { cart: [] };
@@ -145,6 +238,8 @@ class ProductProvider extends Component {
       this.setProducts();
       this.addTotals();
     });
+    
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
 
   addTotals = () => {
@@ -160,20 +255,59 @@ class ProductProvider extends Component {
         cartTotal: total
       }
     })
+    
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
+  
+  shuffle(array){
+    let currentIndex = array.length;
+    let temporaryValue;
+    let randomIndex;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
+  getAds(){
+    let Ads = [];
+    let products = [...this.data];
+    this.shuffle(products)
+    for(let i = 0;i< 6;i++){
+      Ads.push(products.shift())
+    }
+    return Ads;
+  }
+  
 
   render() {
     return (
       <ProductContext.Provider value={{
+        
         ...this.state,
         handleDetail: this.handleDetail,
         addToCart: this.addToCart,
         openModal: this.openModal,
         closeModal: this.closeModal,
+        openLogin:this.openLogin,
+        closeLogin:this.closeLogin,
+        openSignUp:this.openSignUp,
+        closeSignUp:this.closeSignUp,
+        setUser:this.setUser,
+        Logout:this.Logout,
+        setLogin:this.setLogin,
         increment: this.increment,
         decrement: this.decrement,
         removeItem: this.removeItem,
-        clearCart: this.clearCart
+        clearCart: this.clearCart,
+        setProducts: this.setProducts
+        
       }}>
         {this.props.children}
       </ProductContext.Provider>

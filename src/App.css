@@ -4,12 +4,13 @@
   --mainWhite: #f3f3f3;
   --mainDark: #232528;
   --mainYellow: #ffa400;
+  --background-color: rgb(27, 57, 68);
 }
 
 body {
   font-family: "Oswald", sans-serif !important;
   background: var(--mainWhite) !important;
-  color: var(--mainDark) !important;
+  
 }
 
 .text-title {
@@ -41,3 +42,33 @@ body {
   font-size: 1.2rem;
   color: var(--mainYellow);
 }
+.carousel-inner{
+  
+  align-content: center;
+}
+
+#carouselExampleIndicators{
+  background: var(--background-color) !important;
+}
+
+/* thongtin chi tiet
+/*! CSS Used from: Embedded */
+*{margin:0;padding:0;}
+a{text-decoration:none;}
+ul{list-style:none;}
+.parameter{display:block;position:relative;overflow:hidden;background:#fff;padding-top:10px;}
+.parameter li{display:table;background:#fff;width:100%;border-top:1px solid #eee;padding:5px 0;}
+.parameter li:last-child{border-bottom:0;}
+.parameter li:nth-child(n+10){border-bottom:0;}
+.parameter li span{display:table-cell;width:40%;vertical-align:top;padding:5px 0;font-size:14px;color:#666;}
+.parameter li div{display:table-cell;width:auto;vertical-align:top;padding:6px 5px;font-size:14px;color:#333;}
+.parameter li div a{color:#288ad6;}
+.parameter li div.isim{display:block;border-bottom:1px solid #eee;}
+.parameter li div.ibsim{display:block;}
+.parameter li div.ibsim b.h{background:#e91935;color:#fff;padding:3px 5px;border-radius:3px;font-size:10px;margin-right:5px;}
+.parameter li span a{color:#288ad6;}
+/*! CSS Used from: https://cdn.tgdd.vn/mwgcart/vue-pro/css/desktop/global-detail.css?v=38a7bae9 */
+a{text-decoration:none;}
+ul{list-style:none;}
+
+

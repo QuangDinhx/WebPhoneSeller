@@ -2,7 +2,10 @@ import React from 'react';
 
 export default function CartColumns() {
   return (
+    <div class="card">
+              <div class="card-body">
     <div className="container-fluid text-center d-none d-lg-block">
+
       <div className="row">
         <div className="col-10 mx-auto col-lg-2">
           <p className="text-uppercase">product</p> 
@@ -24,5 +27,8 @@ export default function CartColumns() {
         </div>
       </div>
     </div>
+    </div>
+    </div>
+    
   )
 }
