@@ -4,7 +4,6 @@ import { Button} from 'react-bootstrap';
 import { Modal} from 'react-bootstrap';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdbreact';
 import logo from '../logo2.png';
-import axios from 'axios';
 import {Service} from '../Service/api'
 
 
@@ -53,55 +52,67 @@ export default function CreateAcc() {
           <MDBRow>
           <MDBCol md="6">
           
-      
-      <p className="h4 text-center mb-4">Tạo tài khoản</p>
-
-      
-      
-      <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-        Tài khoản:
-      </label>
-      <input
-          name="userName"
-          type="text"
-          value={userName}
-          onChange={e => setUserName(e.target.value)}
-          required />
-      <a></a>
-
-      <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-        Mật khẩu:
+      <div class="container">
+        <div class = "d-block">
+          <div>
+          <p className="h4 text-center mb-4">Tạo tài khoản</p>
+          </div>
         
-      </label>
-      <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required />
 
+      <div>
       <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-        Nhập lại mật khẩu:
-      </label>
-      <input
-          name="password"
-          type="password"
-          value={Repassword}
-          onChange={e => setRePassword(e.target.value)}
-          required />
-          <a></a>
-
-      <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
-      <input
-          name="acceptedTerms"
-          type="checkbox"
-          onChange={e => setAcceptedTerms(!acceptedTerms)}
-          required />
-        Tôi đồng ý với các điều khoản của trang 
-      </label>
-      
+  Tài khoản:
+</label>
+<input
+    name="userName"
+    type="text"
+    value={userName}
+    onChange={e => setUserName(e.target.value)}
+    required />
+<a></a>
+      </div>
       
 
+          <div>
+          <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
+  Mật khẩu:
+  
+</label>
+<input
+    name="password"
+    type="password"
+    value={password}
+    onChange={e => setPassword(e.target.value)}
+    required />
+          </div>
+
+          <div>
+          <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
+  Nhập lại mật khẩu:
+</label>
+<input
+    name="password"
+    type="password"
+    value={Repassword}
+    onChange={e => setRePassword(e.target.value)}
+    required />
+    <a></a>
+          </div>
+
+          <div>
+          <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
+<input
+    name="acceptedTerms"
+    type="checkbox"
+    onChange={e => setAcceptedTerms(!acceptedTerms)}
+    required />
+  Tôi đồng ý với các điều khoản của trang 
+</label>
+          </div>
+
+        </div>
+      
+      </div>
       
     
     </MDBCol>
@@ -110,7 +121,7 @@ export default function CreateAcc() {
 </MDBContainer>
     </Modal.Body>
         <Modal.Footer>
-        <Button variant="primary" onClick={()=>{
+        <Button type= "submit" variant="primary" onClick={()=>{
           if(userName!=='' && password !=='' && Repassword !=='' && password === Repassword && acceptedTerms === true){
             const data = {
               userName: userName,

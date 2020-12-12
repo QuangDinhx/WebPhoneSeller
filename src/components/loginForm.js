@@ -36,10 +36,13 @@ export default function LOgin() {
           <MDBContainer>
           <MDBRow>
           <MDBCol md="6">
-          
-      
-      <p className="h4 text-center mb-4">Đăng Nhập</p>
-      
+          <div class="container">
+            <div className="d-block">
+              <div>
+              <p className="h4 text-center mb-4">Đăng Nhập</p>
+              </div>
+            
+      <div>
       <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
         Tài khoản:
       </label>
@@ -47,11 +50,14 @@ export default function LOgin() {
           name="userName"
           type="text"
           value={userName}
+          style={{width:180}}
           onChange={e => setUserName(e.target.value)}
           required />
+      </div>
       
-
-      <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
+      
+          <div>
+          <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
         Mật khẩu:
         
       </label>
@@ -59,11 +65,14 @@ export default function LOgin() {
           name="password"
           type="password"
           value={password}
+          style={{width:180}}
           onChange={e => setPassword(e.target.value)}
           required />
 
+          </div>
+      
       <div className="text-center mt-4">
-      <Button variant="primary" onClick={()=>{
+      <Button type= "submit" variant="primary" onClick={()=>{
         if(userName !== '' && password !== ''){
           
           let data
@@ -86,8 +95,8 @@ export default function LOgin() {
                 setShow(false)
                 closeLogin()
                 const data2 = {
-                  userName: userName,
-                  permission: "user"
+                  userName: data[0].userName,
+                  permission: data[0].permission
                 }
                 setLogin();
                 setUser(data2);
@@ -124,7 +133,12 @@ export default function LOgin() {
             Submit
           </Button>
       </div>
+            </div>
+         
 
+          </div>
+      
+     
       
     
     </MDBCol>

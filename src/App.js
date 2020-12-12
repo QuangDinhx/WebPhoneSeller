@@ -12,6 +12,8 @@ import Modal from './components/Modal';
 import FooterPage from './components/Footer';
 import CreateAcc from './components/CreateAcc';
 import Login from './components/loginForm';
+import ProductControl from './components/Admin/ProductsControls'
+import AddProduct from './components/Admin/AddProduct'
 
 function App() {
   const [isLogin, setLogin] = React.useState("");
@@ -23,12 +25,15 @@ function App() {
         <Route exact path="/" component={ProductList} />
         <Route path={`/details/:id`} component={Details} />
         <Route path="/cart" component={Cart} />
+        <Route path="/ProductControl" component={ProductControl}/>
         <Route component={Default} />
+        
       </Switch>
       <FooterPage />
       <Modal />  
       <CreateAcc />
       <Login />
+      <AddProduct/>
     </React.Fragment>
   ); 
 }

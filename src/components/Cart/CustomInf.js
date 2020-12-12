@@ -39,7 +39,7 @@ export default function CusInf() {
                 setChi(!Chi)
             }
         }}
-          required />
+           />
         <b class='col-2'>Anh </b>
         
       </label>
@@ -54,7 +54,7 @@ export default function CusInf() {
                 setAnh(!Anh)
             }
         }}
-          required />
+           />
         <b class='col-2'>Chị </b>
       </label>
       </div>
@@ -104,7 +104,7 @@ export default function CusInf() {
       <input
           name="userName"
           type="text"
-          value={address  }
+          value={address}
           placeholder="Địa chỉ"
           onChange={e => setAddress(e.target.value)}
           required />
@@ -117,11 +117,13 @@ export default function CusInf() {
         <label></label>
       </div>
       <div>
-      <input
+      <textarea
           name="acceptedTerms"
           type="text"
           placeholder="Yêu cầu khác (không bắt buộc)"
           value={request}
+          cols="40" 
+          rows="5"
           style={{width: "370px"}}
           onChange={e => setRequest(e.target.value)}
           required />
@@ -130,8 +132,11 @@ export default function CusInf() {
         
       
       <div class=" mt-4">
-      <Button type= "submit" class='submitButton' style={{width:"400px",heigh:"80px"}}  value="Submit" onClick={()=>{
-        handleSubmit();
+      <Button type= "submit" class='submitButton' style={{width:"400px",heigh:"80px"}}  onClick={()=>{
+            if((Anh || Chi )&& HoVaTen !== ''&& phoneNumber !=='' && address !== '' && request !== ''){
+              window.location ="#"
+              alert("thanh toán thành công")
+            }
         }}>
             Đặt Hàng
             

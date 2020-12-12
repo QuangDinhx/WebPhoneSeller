@@ -29,6 +29,8 @@ class ProductProvider extends Component {
     },
     LoginOpen: false,
     SignUpOpen: false,
+    AddProOpen:false,
+    isEdit:false,
     
     
   }
@@ -41,19 +43,25 @@ class ProductProvider extends Component {
       
       this.data = data;
       let state = JSON.parse(localStorage.getItem('State')) !== null ? JSON.parse(localStorage.getItem('State')):[]
+      let users = {
+        userName:'',
+        permission:''
+      };
       this.setState({
         products:products,
         detailProduct:state.detailProduct,
         cart:state.cart?state.cart:[],
         modalProduct:state.modalProduct?state.modalProduct:0,
         cartSubTotal:state.cartSubTotal,
+        user:state.user?state.user:users,
+        isLogin:state.isLogin?state.isLogin:false,
+        isEdit:state.isEdit?state.isEdit:false,
         cartTax:state.cartTax,
         cartTotal:state.cartTotal
       })
       this.setProducts();
       localStorage.setItem('State',JSON.stringify(this.state));
     
-
   })
  
       
@@ -130,6 +138,16 @@ class ProductProvider extends Component {
       return { SignUpOpen: true}
     })
   }
+  openAddPro = ()=>{
+    this.setState(()=>{
+      return { AddProOpen: true}
+    })
+  }
+  closeAddPro = ()=>{
+    this.setState(()=>{
+      return { AddProOpen: false}
+    })
+  }
   closeSignUp = () =>{
     this.setState(()=>{
       return { SignUpOpen: false}
@@ -141,6 +159,7 @@ class ProductProvider extends Component {
         return { user: user}
       })
     }
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
   setLogin=()=>{
     if(this.state.isLogin === false){
@@ -152,10 +171,24 @@ class ProductProvider extends Component {
         return { isLogin: false}
       })
     }
+    localStorage.setItem('State',JSON.stringify(this.state));
+  }
+  setEditMode=()=>{
+    if(this.state.isEdit === false){
+      this.setState(()=>{
+        return { isEdit: true}
+      })
+    }else{
+      this.setState(()=>{
+        return { isEdit: false}
+      })
+    }
+    localStorage.setItem('State',JSON.stringify(this.state));
   }
   Logout=()=>{
+    this.setLogin()
     localStorage.removeItem('State');
-    this.setLogin();
+    
   }
 
   closeModal = () => {
@@ -299,6 +332,8 @@ class ProductProvider extends Component {
         closeLogin:this.closeLogin,
         openSignUp:this.openSignUp,
         closeSignUp:this.closeSignUp,
+        openAddPro:this.openAddPro,
+        closeAddPro:this.closeAddPro,
         setUser:this.setUser,
         Logout:this.Logout,
         setLogin:this.setLogin,

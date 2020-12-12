@@ -51,17 +51,17 @@ export default function Navbar (){
           <li class="nav-item">
             <a class="nav-link" href="/">24h Công Nghệ</a>
           </li>
-          <li class="nav-item dropdown">
+          {isLogin && permission === "admin"?
+            <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Hãng
+              Quản lý
             </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/"><img class="d-flex justify-content-center" src="//cdn.tgdd.vn/Brand/1/iPhone-(Apple)42-b_52.jpg"/></a>
-            <a class="dropdown-item" href="/"><img class="d-flex justify-content-center" src="//cdn.tgdd.vn/Brand/1/Samsung42-b_25.jpg"/></a>
-            <a class="dropdown-item" href="/"><img class="d-flex justify-content-center" src="//cdn.tgdd.vn/Brand/1/OPPO42-b_5.jpg"/></a>
-            <a class="dropdown-item" href="/"><img class="d-flex justify-content-center" src="//cdn.tgdd.vn/Brand/1/Realme42-b_37.png"/></a>
+            <a class="dropdown-item" href="/ProductControl">Kho hàng</a>
           </div>
           </li>
+          :null}
+          
       
     </ul>
       <Form class="d-inline">
@@ -109,7 +109,7 @@ export default function Navbar (){
       {isLogin?<a href="#" class="btn-login">{userName}</a>:<a href="#" class="btn-login" onClick = {() => openLogin()}>Đăng nhập</a>}
           </p>
           {isLogin
-           ? <a href="#" class="btn-login" onClick = {() => Logout()}>Đăng xuất</a>
+           ? <a href="/" class="btn-login" onClick = {() => Logout()}>Đăng xuất</a>
             :<p>
               <a href = "#" onClick = {() => openSignUp()}>
               <i class="fa fa-user"></i> 
