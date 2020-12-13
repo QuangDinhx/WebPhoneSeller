@@ -25,7 +25,7 @@ export default function AddProduct() {
     useEffect(()=>{
         Service.getProducts().then((res)=>{
             const data = res.data.data;
-            setId(data.length);
+            setId(data.length + 1);
         })
     })
 
@@ -234,7 +234,7 @@ export default function AddProduct() {
             const data = {
               id:id,
               title:title,
-              image:image,
+              img:image,
               price:price,
               company:company,
               imfo:imfo,

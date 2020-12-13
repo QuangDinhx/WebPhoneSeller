@@ -30,7 +30,7 @@ class ProductProvider extends Component {
     LoginOpen: false,
     SignUpOpen: false,
     AddProOpen:false,
-    isEdit:false,
+    isEdit:false
     
     
   }
@@ -55,7 +55,7 @@ class ProductProvider extends Component {
         cartSubTotal:state.cartSubTotal,
         user:state.user?state.user:users,
         isLogin:state.isLogin?state.isLogin:false,
-        isEdit:state.isEdit?state.isEdit:false,
+        
         cartTax:state.cartTax,
         cartTotal:state.cartTotal
       })
@@ -146,6 +146,16 @@ class ProductProvider extends Component {
   closeAddPro = ()=>{
     this.setState(()=>{
       return { AddProOpen: false}
+    })
+  }
+  openUpdPro = ()=>{
+    this.setState(()=>{
+      return { UpdProOpen: true}
+    })
+  }
+  closeUpdPro = ()=>{
+    this.setState(()=>{
+      return { UpdProOpen: false}
     })
   }
   closeSignUp = () =>{
@@ -334,9 +344,12 @@ class ProductProvider extends Component {
         closeSignUp:this.closeSignUp,
         openAddPro:this.openAddPro,
         closeAddPro:this.closeAddPro,
+        openUpdPro:this.openUpdPro,
+        closeUpdPro:this.closeUpdPro,
         setUser:this.setUser,
         Logout:this.Logout,
         setLogin:this.setLogin,
+        setEditMode:this.setEditMode,
         increment: this.increment,
         decrement: this.decrement,
         removeItem: this.removeItem,

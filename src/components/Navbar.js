@@ -33,9 +33,8 @@ export default function Navbar (){
     return (
       <ProductConsumer>
       {(value) => {
-        const { SignUpOpen, openSignUp , openLogin,user, isLogin,Logout} = value;
+        const { SignUpOpen, openSignUp , openLogin,user, isLogin,Logout,cart} = value;
         const {userName,permission} = user
-        const {cart} = JSON.parse(localStorage.getItem('State')) !== null? JSON.parse(localStorage.getItem('State')) : []
         return (
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/"><img src={logo} alt="store" className="navbar-brand" /></a>

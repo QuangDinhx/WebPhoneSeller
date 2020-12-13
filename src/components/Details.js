@@ -5,10 +5,26 @@ import { ButtonContainer } from './Button';
 import {Service} from '../Service/api'
 import styled from 'styled-components';
 import { Button} from 'react-bootstrap';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+
 
 export function Details({match}) {
     const [item,setItem] = useState({});
+    const [Utitle,setTitle] = useState('');
+    const [UCompany,setCompany] = useState('')
+    const [Uprice,setPrice] = useState('');
+    const [UOPsys,setOPsys] = useState('');
+    const [UCamBack,setCamBack] = useState('');
+    const [UCamFront,setCamFront] = useState('');
+    const [UCPU,setCPU] = useState('');
+
+    const [URAM,setRAM] = useState('');
+
+    const [UMemorySize,setMemorySize] = useState('');
+
+    const [UCapacity,setCapacity] = useState('');
+
+    const [Uimfo,setImfo] = useState('');
+    
     useEffect(()=>{
       Service.getProducts().then((res)=>{
         const data = res.data.data
@@ -20,13 +36,16 @@ export function Details({match}) {
     
 
     return (
-       
+       <>
       <ProductConsumer>
         {(value) => {
-          let state = JSON.parse(localStorage.getItem('State'));
           
-          const { id, company, img, imfo, price,inCart, title,OPsys,CamBack,CamFront,CPU,RAM,Capacity,MemorySize } = item?item : value.detailProduct;
-          const {cart} = state?state:[]
+          
+          const {_id, id, company, img, imfo, price,inCart, title,OPsys,CamBack,CamFront,CPU,RAM,Capacity,MemorySize } = item?item : value.detailProduct;
+          const {cart,isLogin,user,setEditMode,isEdit} = value
+          const {permission} = user
+          console.log(Utitle)
+          
           if(cart&& cart.length!==0){
             cart.forEach(element => {
               if(element.id === id){
@@ -41,10 +60,76 @@ export function Details({match}) {
             <div class="card">
             <div class="card-body">
             <div className="container py-5">
-            
+              {isLogin && permission ==='admin'?
+                <div className="col">
+                  <div className="float-right">
+                  {isEdit?
+                      <button type="button" className="d-inline btn pr-3" onClick={()=>{
+
+                        const data = {
+                          _id:_id,
+                          id:id,
+                          title:Utitle !==''?Utitle:title,
+                          img:img,
+                          price:Uprice !==''?Uprice:price,
+                          company:UCompany !==''?UCompany:company,
+                          imfo:Uimfo !==''?Uimfo:imfo,
+                          inCart:false,
+                          count:0,
+                          total:0,
+                          OPsys:UOPsys !== ''?UOPsys:OPsys,
+                          CamBack:UCamBack !== ''?UCamBack:CamBack,
+                          CamFront:UCamFront !==''?UCamFront:CamFront,
+                          CPU:UCPU !==''?UCPU:CPU,
+                          RAM:URAM !==''?URAM:RAM,
+                          Capacity:UCapacity !== ''?UCapacity:Capacity,
+                          MemorySize:UMemorySize !== ''?UMemorySize:MemorySize, 
+                          active:true
+                        }
+                        console.log(data)
+                        Service.updateProduct(data).then((res)=>{
+                          if(res.data.data){
+                            console.log(true);
+                          }else{
+                            console.log(false);
+                          }
+                          setEditMode()
+
+                          setTimeout(()=>{
+                            Service.getProducts().then((res)=>{
+                              const data = res.data.data
+                              const item = data[match.params.id - 1];
+                              setItem(item)
+                            })
+                          },100)
+                          
+                          
+                        }) 
+                      }}>
+                        Lưu thay đổi
+                      </button>
+                    :null}
+                    <button type="button" className="d-inline btn btn-success " onClick={()=>{setEditMode()}}>
+                      Sửa
+                    </button>
+                  </div>
+                    
+                </div>
+              :null}
               <div className="row">
                 <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
-                  <h1>{title}</h1>
+                  {isEdit?
+                    <input
+                    name="userName"
+                    type="text"
+                    width="481px"
+                    height="48px"
+                    value = {Utitle}
+                    placeholder = {title}
+                    onChange={e => setTitle(e.target.value)}
+                    required />
+                  :<h1>{title}</h1>}
+                  
                 </div>
               </div>
               
@@ -77,12 +162,33 @@ export function Details({match}) {
                 </div>
                 
                 <div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
-                  <h2>model: {title}</h2>
+                  
                   <h4 className="text-title text-uppercase text-muted mt-3 mb-2">
-                    made by: <span className="text-uppercase">{company}</span>
+                    made by:{isEdit?
+                      <input
+                      name="userName"
+                      type="text"
+                      width="153px"
+                      height="34px"
+                      value={UCompany}
+                      placeholder={company}
+                      onChange={e => setCompany(e.target.value)}
+                      required />
+                    :<span className="text-uppercase">{company}</span>} 
                   </h4>
                   <h4 className="text-blue">
-                    <strong>price: <span>$</span>{price}</strong>
+                    <strong>price: <span>$</span>{isEdit?
+                      <input
+                      name="userName"
+                      type="text"
+                      width="50px"
+                      height="28px"
+                      value={Uprice}
+                      placeholder={price}
+                      onChange={e => setPrice(e.target.value)}
+                      required />
+                    :`${price}`}
+                    </strong>
                   </h4>
                 
                 
@@ -94,25 +200,96 @@ export function Details({match}) {
                   <div class="card-body">
                   <ul class="parameter ">
                     <li class="p229056 g72 "><span>Hệ điều hành:</span>
-                      <div>{OPsys}</div>
+                      {isEdit?
+                        <input
+                        name="userName"
+                        type="text"
+                        width="172px"
+                        height="32px"
+                        value={UOPsys}
+                        placeholder={OPsys}
+                        onChange={e => setOPsys(e.target.value)}
+                        required />
+                      :<div>{OPsys}</div>}
                     </li>
                     <li class="p229056 g27"><span>Camera sau:</span>
-                      <div>{CamBack}</div>
+                      {isEdit?
+                        <input
+                        name="userName"
+                        type="text"
+                        width="172px"
+                        height="32px"
+                        value={UCamBack}
+                        placeholder={CamBack}
+                        onChange={e => setCamBack(e.target.value)}
+                        required />
+                      :<div>{CamBack}</div>}
                     </li>
                     <li class="p229056 g29"><span>Camera trước:</span>
-                        <div>{CamFront}</div>
+                        {isEdit?
+                        <input
+                        name="userName"
+                        type="text"
+                        width="172px"
+                        height="32px"
+                        value={UCamFront}
+                        placeholder={CamFront}
+                        onChange={e => setCamFront(e.target.value)}
+                        required />
+                      :<div>{CamFront}</div>}
                     </li>
                     <li class="p229056 g6059"><span>CPU:</span>
-                      <div>{CPU}</div>
+                      {isEdit?
+                        <input
+                        name="userName"
+                        type="text"
+                        width="172px"
+                        height="32px"
+                        value={UCPU}
+                        placeholder={CPU}
+                        onChange={e => setCPU(e.target.value)}
+                        required />
+                      :<div>{CPU}</div>}
                     </li>
                     <li class="p229056 g50"><span>RAM:</span>
-                      <div>{RAM}</div>
+                      {isEdit?
+                        <input
+                        name="userName"
+                        type="text"
+                        width="172px"
+                        height="32px"
+                        value={URAM}
+                        placeholder={RAM}
+                        onChange={e => setRAM(e.target.value)}
+                        required />
+                      :<div>{RAM}</div>}
                     </li>
                     <li class="p229056 g49"><span>Bộ nhớ trong:</span>
-                      <div>{MemorySize}</div>
+                      {isEdit?
+                        <input
+                        name="userName"
+                        type="text"
+                        width="172px"
+                        height="32px"
+                        value={UMemorySize}
+                        placeholder={MemorySize}
+                        onChange={e => setMemorySize(e.target.value)}
+                        required />
+                      :<div>{MemorySize}</div>}
                     </li>
                     <li class="p229056 g84_10882"><span>Dung lượng pin:</span>
-                      <div>{Capacity}</div>
+                      {isEdit?
+                        <input
+                        name="userName"
+                        type="text"
+                        width="172px"
+                        height="32px"
+                        value={UCapacity}
+                        placeholder={Capacity}
+                        onChange={e => setCapacity(e.target.value)}
+                        required />
+                      :<div>{Capacity}</div>}
+                      
                     </li>
                   </ul>
                   </div>
@@ -121,10 +298,22 @@ export function Details({match}) {
                   <p className="text-capitalize font-weight-bold mt-3 mb-0">
                     Giới Thiệu:
                   </p>
+                  {isEdit?
+                    <textarea
+                    name="userName"
+                    type="text"
+                    cols="40" 
+                    rows="5"
+                    value={Uimfo}
+                    placeholder={imfo}
+                    onChange={e => setImfo(e.target.value)}
+                    required />
                   
-                  <p className="text-muted lead">
-                    {imfo}
-                  </p>
+                  :<p className="text-muted lead">
+                  {imfo}
+                </p>
+                  }
+                  
                   </div>
                   
                   {/* buttons */}
@@ -137,8 +326,10 @@ export function Details({match}) {
             
           )
         }}
-      </ProductConsumer>
       
+      </ProductConsumer>
+
+      </>
     )
   
 }

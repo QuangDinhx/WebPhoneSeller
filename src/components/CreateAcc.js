@@ -29,7 +29,7 @@ export default function CreateAcc() {
     <ProductConsumer>
     {(value) => {
       const { SignUpOpen, openSignUp , closeSignUp ,setLogin,setUser,isLogin} = value;
-      console.log(isLogin)
+
       setShow(SignUpOpen);
       
       
