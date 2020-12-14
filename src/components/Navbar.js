@@ -57,6 +57,7 @@ export default function Navbar (){
             </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/ProductControl">Kho hàng</a>
+            <a class="dropdown-item" href="/UserControl">Người dùng</a>
           </div>
           </li>
           :null}

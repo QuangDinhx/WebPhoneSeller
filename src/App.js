@@ -13,6 +13,7 @@ import FooterPage from './components/Footer';
 import CreateAcc from './components/CreateAcc';
 import Login from './components/loginForm';
 import ProductControl from './components/Admin/ProductsControls'
+import UserControl from './components/Admin/UsersControls'
 import AddProduct from './components/Admin/AddProduct'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path={`/details/:id`} component={Details} />
         <Route path="/cart" component={Cart} />
         <Route path="/ProductControl" component={ProductControl}/>
+        <Route path="/UserControl" component={UserControl}/>
         <Route component={Default} />
         
       </Switch>

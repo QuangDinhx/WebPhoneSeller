@@ -29,7 +29,9 @@ export function Details({match}) {
       Service.getProducts().then((res)=>{
         const data = res.data.data
         const item = data[match.params.id - 1];
-        setItem(item)
+        
+          setItem(item)
+        
       })
     },[])
    
